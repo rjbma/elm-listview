@@ -1,0 +1,17 @@
+/* display the sort icons on a table header */
+.listView-headerColumn-isSortable {
+  cursor: pointer;
+  user-select: none;
+}
+.listView-headerColumn-isSortedAscending::after {
+  content: "▲";
+}
+.listView-headerColumn-isSortedDescending::after {
+  content: "▼";
+}
+.listView-headerColumn-isSorted::after {
+  font-size: 10px;
+  margin-left: 3px;
+  position: relative;
+  bottom: 2px;
+}

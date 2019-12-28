@@ -1,0 +1,338 @@
+body {
+  font-family: "Source Sans Pro", "Trebuchet MS", "Lucida Grande",
+    "Bitstream Vera Sans", "Helvetica Neue", sans-serif;
+  margin: 0;
+  color: #293c4b;
+  background-color: #f83c652e;
+  background-color: #92a47457;
+  color: #444;
+  box-sizing: border-box;
+}
+h1 {
+  margin-top: 80px;
+  margin-bottom: 20px;
+}
+h2 {
+  margin-top: 50px;
+  margin-bottom: 10px;
+}
+
+.container {
+  max-width: 700px;
+  margin: auto;
+  padding: 0px 30px;
+  margin-bottom: 100px;
+}
+
+
+/* component for displaying a name with a picture */
+.characterId {
+  display: flex;
+  align-items: center;
+}
+.characterId > img {
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 0px 1px 4px;
+  margin-right: 7px;
+}
+
+/* component from displaying an image */
+.avatar {
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 0px 1px 4px;
+  margin-right: 7px;
+}
+.avatar--small {
+  width: 20px;
+  height: 20px;
+  border-radius: 2px;
+}
+
+/* style for the table */
+.gravityTable table {
+  border-collapse: separate;
+  border-spacing: 0px 5px;
+}
+.gravityTable td, 
+.gravityTable th {
+  background-color: white;
+  border: solid 1px transparent;
+  padding: 10px 15px;
+  text-align: left;
+}
+.gravityTable th {
+  background-color: #92a474ff;
+  color: white;
+}
+.gravityTable tr:nth-child(even) td {
+  background-color: #ffffffbb;
+}
+.gravityTable th:first-child,
+.gravityTable td:first-child {
+  border-top-left-radius: 4px;
+}
+.gravityTable th:last-child,
+.gravityTable td:last-child {
+  border-top-right-radius: 4px;
+}
+.gravityTable th:first-child,
+.gravityTable td:first-child {
+  border-bottom-left-radius: 4px;
+}
+.gravityTable th:last-child,
+.gravityTable td:last-child {
+  border-bottom-right-radius: 4px;
+}
+
+
+
+
+
+/* a CSS grid per line */
+.gravityGrid .listView-row,
+.gravityGrid .listView-header {
+  display: grid;
+  grid-template-columns: 70px 2fr 2fr 1fr 70px;
+  align-items: center;
+  align-items: stretch;
+  margin-bottom: 10px;
+  background-color: white;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.gravityGrid .listView-headerColumn {
+  background-color: #92a474ff;
+  color: white;
+}
+.gravityGrid .listView-row:nth-child(even) {
+  background-color: #ffffffbb;
+}
+.gravityGrid .listView-column,
+.gravityGrid .listView-headerColumn {
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+}
+.gravityGrid .listView-column--Power {
+  justify-content: end;
+}
+
+
+/* a CSS grid per line, small screen */
+@media (max-width: 900px) {
+  .gravityGrid .listView-row,
+  .gravityGrid .listView-header {
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    box-shadow: 0px 1px 3px 1px #3336;
+  }
+
+  .gravityGrid .listView-column--img,
+  .gravityGrid .listView-headerColumn--img {
+    grid-row: 1 / span 2;
+    grid-column: 3;
+    position: relative;
+  }
+
+  .gravityGrid .listView-column--img img {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    border-radius: 0px;
+    box-shadow: none;
+  }
+
+  .gravityGrid .listView-column--Name,
+  .gravityGrid .listView-headerColumn--Name {
+    order: 1;
+  }
+  .gravityGrid .listView-column--Tagline {
+    order: 3;
+    text-transform: uppercase;
+    color: #aaa;
+    font-size: 11px;
+    letter-spacing: 0.4px;
+    font-style: italic;
+  }
+  .gravityGrid .listView-headerColumn--Tagline {
+    order: 3;
+  }
+  .gravityGrid .listView-column--Tagline::before {
+    content: "—";
+    margin-right: 3px;
+  }
+  .gravityGrid .listView-column--Tagline::after {
+    content: "—";
+    margin-left: 3px;
+  }
+  .gravityGrid .listView-column--Power,
+  .gravityGrid .listView-headerColumn--Power {
+    order: 2;
+  }
+  .gravityGrid .listView-column--Power {
+    color: #666;
+    font-weight: bold;
+  }
+  .gravityGrid .listView-column--Hat {
+    opacity: 0;
+    display:none;
+    order: 4
+  }
+  .gravityGrid .listView-headerColumn--Hat {
+    order: 4;
+  }
+  .gravityGrid .listView-row,
+  .gravityGrid .listView-header {
+    margin-bottom: 20px;
+  }
+}
+
+
+
+/* view as a bunch of cards */
+.gravityDeck .listView {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.gravityDeck .listView-header {
+  display: block;
+  background: none;
+  box-shadow: none;
+  width: 100%;
+  margin-bottom: 20px;
+}
+.gravityDeck .listView-headerColumn {
+  background-color: transparent;
+  font-weight: normal;
+  display: inline-block;
+  color: black;
+  padding: 0;
+  margin-right: 20px;
+}
+.gravityDeck .listView-row {
+  width: 150px;
+  height: 200px;
+  position: relative;
+  background-color:white;
+  box-shadow: 0px 3px 5px 1px #3336;
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 20px;
+  margin: 0px 10px 20px 10px;
+  transition: box-shadow 200ms ease-out, transform 200ms ease-out;
+}
+.gravityDeck .listView-row:hover {
+  box-shadow: 0px 3px 10px 4px #3336;
+  transform: translateY(-5px);
+}
+.gravityDeck .listView-column--img img {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  border-radius: 0px;
+  opacity: 0.7;
+}
+.gravityDeck .listView-column--Name {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  height: 70px;
+  width: 100%;
+  text-align: center;
+  font-weight: bolder;
+  font-size: 25px;
+  color: white;
+  white-space: nowrap;
+  padding-top: 40px;
+  background: linear-gradient(transparent,rgba(0,0,0,.9));
+}
+.gravityDeck .listView-column--Tagline {
+  position: absolute;
+  bottom: 20px;
+  left: 0px;
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;
+  text-transform: uppercase;
+  color: #efefef;
+  font-size: 11px;
+  letter-spacing: 0.4px;
+  font-style: italic;
+}
+.gravityDeck .listView-column--Hat {
+  position: absolute;
+  top: 5px;
+  right: 0px;
+}
+.gravityDeck .listView-column--Power {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  padding-top: 8px;
+  padding-left: 8px;
+  height: 50px;
+  width: 100%;
+  text-align: left;
+  font-weight: bolder;
+  font-size: 25px;
+  color: gold;
+  white-space: nowrap;
+  background: linear-gradient(rgba(1,1,1,.9), transparent);
+
+   color: gold;
+     text-shadow:
+   -1px -1px 0 black,  
+    1px -1px 0 black,
+    -1px 1px 0 black,
+     1px 1px 0 black;
+}
+.gravityDeck .listView-paginator {
+  width: 100%;
+}
+
+
+
+
+
+
+
+
+.example2-container {
+  padding: 20px;
+  background-color: #ededed;
+  border-radius: 4px;
+  border: 1px solid #92a474ff;
+}
+.example2-container header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+.example2-container header .example2-viewSelectorButton {
+  background-color: white;
+  color:#92a474;
+  border: 1px solid#92a474;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+  font-size: 10px;
+  margin: 0px 5px;
+  padding: 3px 10px;
+  border-radius: 3px;
+  transition: transform 100ms ease-out;
+}
+.example2-container header .example2-viewSelectorButton:hover {
+  background-color:#92a474;
+  color: white;
+  cursor: pointer;
+}
