@@ -60,7 +60,6 @@ listViewConfig =
             , ListView.makeColumn.string "Tagline" .tagLine
             , ListView.makeColumn.int "Power" .power
             , ListView.makeColumn.html "Hat" (.hatType >> viewHat)
-            , ListView.makeColumn.int "Total pills / week" (\c -> Array.foldl (+) 0 c.values)
             ]
     in
     ListView.makeConfig
@@ -211,13 +210,18 @@ view model =
 
 viewExample1 : Model -> Html Msg
 viewExample1 model =
+    let
+        example1ListViewConfig =
+            listViewConfig
+                |> ListView.withColumn (ListView.makeColumn.int "Pills per week" (\c -> Array.foldl (+) 0 c.values))
+    in
     Html.article [ class_ "example1" ]
         [ Html.h2 [] [ Html.text "Simple table" ]
         , Html.p [] [ Markdown.toHtml [] """Render data in a HTML table.
 
 Cells can contain simple data (`String`, `Int`, `Float`), but can also contain any HTML element.""" ]
         , Html.div [ class_ "gravityTable scrollableContainer" ]
-            [ ListView.Viewers.viewAsHtmlTable Example1ListViewMsg listViewConfig model.example1State model.rows
+            [ ListView.Viewers.viewAsHtmlTable Example1ListViewMsg example1ListViewConfig model.example1State model.rows
             ]
         ]
 
@@ -328,13 +332,19 @@ viewExample3 model =
 
         lvConfig =
             ListView.makeConfig
-                |> ListView.withColumn (ListView.makeColumn.string "Name" .fullName)
+                |> ListView.withColumn (ListView.makeColumn.html "Name" (\c _ -> Html.text c.fullName))
                 |> ListView.withColumns cols
     in
     Html.article [ class_ "example2" ]
         [ Html.h2 [] [ Html.text "Editable table" ]
         , Html.div [ class_ "gravityTable scrollableContainer" ]
-            [ ListView.Viewers.viewAsHtmlTable Example1ListViewMsg lvConfig model.example1State model.rows ]
+            [ Markdown.toHtml [] """`Html` cells can render just about anything, and can produce messages for your app.
+
+In this example, some values of the model can be edited directly; those values are immediately summed in the column **Pills per week** on the first table of this page.
+
+Also, cells in this table can be navigated using the arrow keys. However, due to the shady way that navigation was implemented, I had to disable sorting on the whole table"""
+            , ListView.Viewers.viewAsHtmlTable Example1ListViewMsg lvConfig model.example3State model.rows
+            ]
         ]
 
 
