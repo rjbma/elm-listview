@@ -2,12 +2,14 @@ module MainDemo exposing (main)
 
 import Array exposing (Array)
 import Browser
+import Browser.Dom
 import Html exposing (Html)
 import Html.Attributes exposing (src)
 import Html.Events exposing (onClick)
 import ListView
 import ListView.Viewers exposing (ListViewMsg)
 import Markdown
+import Task
 import Utils exposing (class_)
 
 
@@ -58,19 +60,28 @@ listViewConfig =
             , ListView.makeColumn.string "Tagline" .tagLine
             , ListView.makeColumn.int "Power" .power
             , ListView.makeColumn.html "Hat" (.hatType >> viewHat)
+            , ListView.makeColumn.int "Total pills / week" (\c -> Array.foldl (+) 0 c.values)
             ]
     in
     ListView.makeConfig
         |> ListView.withColumns cols
 
 
-viewPicture : Character -> Html msg
-viewPicture row =
+{-| Helper function for viewing the picture of a character.
+Note how these viewer function for columns with `Html` output must always receive the
+index as parameter, even if they don't need it.
+-}
+viewPicture : Character -> Int -> Html msg
+viewPicture row _ =
     Html.img [ class_ "avatar", src row.imageUrl ] []
 
 
-viewHat : HatType -> Html msg
-viewHat hatType =
+{-| Helper function for viewing the picture of a hat.
+Note how these viewer function for columns with `Html` output must always receive the
+index as parameter, even if they don't need it.
+-}
+viewHat : HatType -> Int -> Html msg
+viewHat hatType _ =
     case hatType of
         None ->
             Html.text ""
@@ -125,26 +136,45 @@ initialModel =
     }
 
 
+type alias CharacterIndex =
+    Int
+
+
+type alias DayIndex =
+    Int
+
+
 type Msg
     = Example1ListViewMsg ListViewMsg
     | Example2ListViewMsg ListViewMsg
     | SwitchExample2ViewMode Example2ViewMode
-    | Ex3UpdateCell Character Int String
+    | Ex3UpdateCell CharacterIndex DayIndex String
+    | Ex3OnFocusCell CharacterIndex DayIndex
+    | NoOp
 
 
-update : Msg -> Model -> Model
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        NoOp ->
+            ( model, Cmd.none )
+
         Example1ListViewMsg listViewMsg ->
-            { model | example1State = ListView.Viewers.update model.rows listViewMsg model.example1State }
+            ( { model | example1State = ListView.Viewers.update model.rows listViewMsg model.example1State }
+            , Cmd.none
+            )
 
         Example2ListViewMsg listViewMsg ->
-            { model | example2State = ListView.Viewers.update model.rows listViewMsg model.example2State }
+            ( { model | example2State = ListView.Viewers.update model.rows listViewMsg model.example2State }
+            , Cmd.none
+            )
 
         SwitchExample2ViewMode newViewMode ->
-            { model | example2ViewMode = newViewMode }
+            ( { model | example2ViewMode = newViewMode }
+            , Cmd.none
+            )
 
-        Ex3UpdateCell character dayNumber strValue ->
+        Ex3UpdateCell characterIndex dayNumber strValue ->
             let
                 intValue =
                     String.toInt strValue |> Maybe.withDefault 0
@@ -153,17 +183,19 @@ update msg model =
                     \c -> { c | values = Array.set dayNumber intValue c.values }
 
                 newRows =
-                    List.map
-                        (\c ->
-                            if c == character then
-                                updateValuesForCharacter c
-
-                            else
-                                c
-                        )
-                        model.rows
+                    Utils.updateListItemAtIndex updateValuesForCharacter characterIndex model.rows
             in
-            { model | rows = newRows }
+            ( { model | rows = newRows }
+            , Cmd.none
+            )
+
+        Ex3OnFocusCell characterIndex dayIndex ->
+            let
+                cmd =
+                    Browser.Dom.focus (makeCellId characterIndex dayIndex)
+                        |> Task.attempt (\_ -> NoOp)
+            in
+            ( model, cmd )
 
 
 view : Model -> Html Msg
@@ -184,7 +216,7 @@ viewExample1 model =
         , Html.p [] [ Markdown.toHtml [] """Render data in a HTML table.
 
 Cells can contain simple data (`String`, `Int`, `Float`), but can also contain any HTML element.""" ]
-        , Html.div [ class_ "gravityTable" ]
+        , Html.div [ class_ "gravityTable scrollableContainer" ]
             [ ListView.Viewers.viewAsHtmlTable Example1ListViewMsg listViewConfig model.example1State model.rows
             ]
         ]
@@ -192,14 +224,38 @@ Cells can contain simple data (`String`, `Int`, `Float`), but can also contain a
 
 viewExample2 : Model -> Html Msg
 viewExample2 model =
+    let
+        buttonClass =
+            \viewMode ->
+                if model.example2ViewMode == viewMode then
+                    "example2-viewSelectorButton example2-viewSelectorButton-isActive"
+
+                else
+                    "example2-viewSelectorButton"
+    in
     Html.article [ class_ "example2" ]
         [ Html.h2 [] [ Html.text "Different views for the same data, config, and state" ]
         , Markdown.toHtml [] "You can use the same `ListView.Config` and `ListView.State` with different viewing functions. \n\nNote that, since we're reusing the `ListView.State`, the current sort order and page are retained when we switch views."
-        , Html.section [ class_ "example2-container" ]
+        , Html.section [ class_ "example2-container scrollableContainer" ]
             [ Html.header []
-                [ Html.button [ class_ "example2-viewSelectorButton", Html.Attributes.type_ "button", onClick (SwitchExample2ViewMode Example2HtmlTable) ] [ Html.text "HTML table" ]
-                , Html.button [ class_ "example2-viewSelectorButton", Html.Attributes.type_ "button", onClick (SwitchExample2ViewMode Example2CssGrid) ] [ Html.text "CSS grid" ]
-                , Html.button [ class_ "example2-viewSelectorButton", Html.Attributes.type_ "button", onClick (SwitchExample2ViewMode Example2FlexCards) ] [ Html.text "Flexbox cards" ]
+                [ Html.button
+                    [ class_ (buttonClass Example2HtmlTable)
+                    , Html.Attributes.type_ "button"
+                    , onClick (SwitchExample2ViewMode Example2HtmlTable)
+                    ]
+                    [ Html.text "HTML table" ]
+                , Html.button
+                    [ class_ (buttonClass Example2CssGrid)
+                    , Html.Attributes.type_ "button"
+                    , onClick (SwitchExample2ViewMode Example2CssGrid)
+                    ]
+                    [ Html.text "CSS grid" ]
+                , Html.button
+                    [ class_ (buttonClass Example2FlexCards)
+                    , Html.Attributes.type_ "button"
+                    , onClick (SwitchExample2ViewMode Example2FlexCards)
+                    ]
+                    [ Html.text "Flexbox cards" ]
                 ]
             , case model.example2ViewMode of
                 Example2HtmlTable ->
@@ -223,32 +279,51 @@ viewExample2 model =
         ]
 
 
-getIntFromArray : Int -> Array Int -> Int
-getIntFromArray i array =
+getViewValueFromArray : Int -> Array Int -> String
+getViewValueFromArray i array =
     Array.get i array
         |> Maybe.withDefault 0
+        |> String.fromInt
+        |> (\s ->
+                if s == "0" then
+                    ""
+
+                else
+                    s
+           )
+
+
+makeCellId : CharacterIndex -> DayIndex -> String
+makeCellId characterIndex dayIndex =
+    "cell_" ++ String.fromInt characterIndex ++ "_" ++ String.fromInt dayIndex
 
 
 viewExample3 : Model -> Html Msg
 viewExample3 model =
     let
         makeDayColumn =
-            \i ->
-                ListView.makeColumn.html ("Day " ++ String.fromInt i)
-                    (\character ->
+            \dayIndex ->
+                ListView.makeColumn.html ("Day " ++ String.fromInt dayIndex)
+                    (\character characterIndex ->
                         Html.input
-                            [ class_ "example3-dayInput"
+                            [ Html.Attributes.id (makeCellId characterIndex dayIndex)
+                            , class_ "example3-dayInput"
                             , Html.Attributes.value
-                                (getIntFromArray i character.values
-                                    |> String.fromInt
-                                )
-                            , Html.Events.onInput (Ex3UpdateCell character i)
+                                (getViewValueFromArray dayIndex character.values)
+                            , Html.Events.onInput (Ex3UpdateCell characterIndex dayIndex)
+                            , Utils.onArrowKeysDown
+                                { onUp = Ex3OnFocusCell (characterIndex - 1) dayIndex
+                                , onRight = Ex3OnFocusCell characterIndex (dayIndex + 1)
+                                , onDown = Ex3OnFocusCell (characterIndex + 1) dayIndex
+                                , onLeft = Ex3OnFocusCell characterIndex (dayIndex - 1)
+                                , onOther = Ex3OnFocusCell characterIndex dayIndex
+                                }
                             ]
                             []
                     )
 
         cols =
-            List.range 1 numberOfDays
+            List.range 0 (numberOfDays - 1)
                 |> List.map makeDayColumn
 
         lvConfig =
@@ -258,15 +333,16 @@ viewExample3 model =
     in
     Html.article [ class_ "example2" ]
         [ Html.h2 [] [ Html.text "Editable table" ]
-        , Html.div [ class_ "gravityTable" ]
+        , Html.div [ class_ "gravityTable scrollableContainer" ]
             [ ListView.Viewers.viewAsHtmlTable Example1ListViewMsg lvConfig model.example1State model.rows ]
         ]
 
 
 main : Program () Model Msg
 main =
-    Browser.sandbox
-        { init = initialModel
+    Browser.element
+        { init = \_ -> ( initialModel, Cmd.none )
         , view = view
         , update = update
+        , subscriptions = \_ -> Sub.none
         }
