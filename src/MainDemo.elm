@@ -3,6 +3,7 @@ module MainDemo exposing (main)
 import Array exposing (Array)
 import Browser
 import Browser.Dom
+import DemoUtils exposing (class_)
 import Html exposing (Html)
 import Html.Attributes exposing (src)
 import Html.Events exposing (onClick)
@@ -10,7 +11,6 @@ import ListView
 import ListView.Viewers exposing (ListViewMsg)
 import Markdown
 import Task
-import Utils exposing (class_)
 
 
 type alias Character =
@@ -182,7 +182,7 @@ update msg model =
                     \c -> { c | values = Array.set dayNumber intValue c.values }
 
                 newRows =
-                    Utils.updateListItemAtIndex updateValuesForCharacter characterIndex model.rows
+                    DemoUtils.updateListItemAtIndex updateValuesForCharacter characterIndex model.rows
             in
             ( { model | rows = newRows }
             , Cmd.none
@@ -315,12 +315,11 @@ viewExample3 model =
                             , Html.Attributes.value
                                 (getViewValueFromArray dayIndex character.values)
                             , Html.Events.onInput (Ex3UpdateCell characterIndex dayIndex)
-                            , Utils.onArrowKeysDown
+                            , DemoUtils.onArrowKeysDown
                                 { onUp = Ex3OnFocusCell (characterIndex - 1) dayIndex
                                 , onRight = Ex3OnFocusCell characterIndex (dayIndex + 1)
                                 , onDown = Ex3OnFocusCell (characterIndex + 1) dayIndex
                                 , onLeft = Ex3OnFocusCell characterIndex (dayIndex - 1)
-                                , onOther = Ex3OnFocusCell characterIndex dayIndex
                                 }
                             ]
                             []

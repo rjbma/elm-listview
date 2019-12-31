@@ -1,12 +1,16 @@
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
 body {
   font-family: "Source Sans Pro", "Trebuchet MS", "Lucida Grande",
     "Bitstream Vera Sans", "Helvetica Neue", sans-serif;
   margin: 0;
   color: #293c4b;
-  background-color: #f83c652e;
   background-color: #92a47457;
   color: #444;
-  box-sizing: border-box;
 }
 h1 {
   margin-top: 80px;
@@ -22,6 +26,10 @@ h2 {
   margin: auto;
   padding: 0px 30px;
   margin-bottom: 100px;
+}
+
+.scrollableContainer {
+  overflow: auto;
 }
 
 
@@ -54,7 +62,55 @@ h2 {
   border-radius: 2px;
 }
 
-/* style for the table */
+/* display the sort icons on a table header */
+.listView-headerColumn-isSortable {
+  cursor: pointer;
+  user-select: none;
+}
+.listView-headerColumn-isSortedAscending::after {
+  content: "▲";
+}
+.listView-headerColumn-isSortedDescending::after {
+  content: "▼";
+}
+.listView-headerColumn-isSorted::after {
+  font-size: 10px;
+  margin-left: 3px;
+  position: relative;
+  bottom: 2px;
+}
+
+/* style the paginators */
+.listView-paginator {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.listView-paginatorSummary span {
+  margin-right: 3px;
+  font-size: 13px;
+}
+.listView-paginatorControls button {
+  background: none;
+  line-height: 28px;
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0px 1px 3px #92a474;
+  color: #92a474;
+  margin: 0px 3px;
+  width: 30px;
+}
+.listView-paginatorControls button:hover {
+  background-color: #92a474;
+  color: white;
+  cursor: pointer;
+}
+
+
+
+
+
+/* style for viewing as a HTML table */
 .gravityTable table {
   border-collapse: separate;
   border-spacing: 0px 5px;
@@ -94,7 +150,8 @@ h2 {
 
 
 
-/* a CSS grid per line */
+/* style for viewing as a CSS grid */
+/* note that, in order to have some spacing between each row, we actually have a CSS grid per line */
 .gravityGrid .listView-row,
 .gravityGrid .listView-header {
   display: grid;
@@ -119,10 +176,9 @@ h2 {
   display: flex;
   align-items: center;
 }
-.gravityGrid .listView-column--Power {
+.gravityGrid .listView-column--power {
   justify-content: end;
 }
-
 
 /* a CSS grid per line, small screen */
 @media (max-width: 900px) {
@@ -150,11 +206,11 @@ h2 {
     box-shadow: none;
   }
 
-  .gravityGrid .listView-column--Name,
-  .gravityGrid .listView-headerColumn--Name {
+  .gravityGrid .listView-column--name,
+  .gravityGrid .listView-headerColumn--name {
     order: 1;
   }
-  .gravityGrid .listView-column--Tagline {
+  .gravityGrid .listView-column--tagline {
     order: 3;
     text-transform: uppercase;
     color: #aaa;
@@ -162,31 +218,31 @@ h2 {
     letter-spacing: 0.4px;
     font-style: italic;
   }
-  .gravityGrid .listView-headerColumn--Tagline {
+  .gravityGrid .listView-headerColumn--tagline {
     order: 3;
   }
-  .gravityGrid .listView-column--Tagline::before {
+  .gravityGrid .listView-column--tagline::before {
     content: "—";
     margin-right: 3px;
   }
-  .gravityGrid .listView-column--Tagline::after {
+  .gravityGrid .listView-column--tagline::after {
     content: "—";
     margin-left: 3px;
   }
-  .gravityGrid .listView-column--Power,
-  .gravityGrid .listView-headerColumn--Power {
+  .gravityGrid .listView-column--power,
+  .gravityGrid .listView-headerColumn--power {
     order: 2;
   }
-  .gravityGrid .listView-column--Power {
+  .gravityGrid .listView-column--power {
     color: #666;
     font-weight: bold;
   }
-  .gravityGrid .listView-column--Hat {
+  .gravityGrid .listView-column--hat {
     opacity: 0;
     display:none;
     order: 4
   }
-  .gravityGrid .listView-headerColumn--Hat {
+  .gravityGrid .listView-headerColumn--hat {
     order: 4;
   }
   .gravityGrid .listView-row,
@@ -197,7 +253,9 @@ h2 {
 
 
 
-/* view as a bunch of cards */
+
+
+/* style for viewing as a bunch of cards (uses flexbox) */
 .gravityDeck .listView {
   display: flex;
   flex-direction: row;
@@ -206,18 +264,27 @@ h2 {
 }
 .gravityDeck .listView-header {
   display: block;
-  background: none;
   box-shadow: none;
   width: 100%;
   margin-bottom: 20px;
+  border: 1px solid #92a474;
+  border-radius: 3px;
+  padding: 5px 10px;
+  background-color: white;
+}
+.gravityDeck .listView-headerColumn:not(.listView-headerColumn-isSortable) {
+  display: none;
 }
 .gravityDeck .listView-headerColumn {
   background-color: transparent;
-  font-weight: normal;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  font-size: 12px;
   display: inline-block;
-  color: black;
   padding: 0;
   margin-right: 20px;
+  color: #92a474;
 }
 .gravityDeck .listView-row {
   width: 150px;
@@ -244,23 +311,23 @@ h2 {
   border-radius: 0px;
   opacity: 0.7;
 }
-.gravityDeck .listView-column--Name {
+.gravityDeck .listView-column--name {
   position: absolute;
   bottom: 0px;
   left: 0px;
-  height: 70px;
+  height: 90px;
   width: 100%;
   text-align: center;
   font-weight: bolder;
-  font-size: 25px;
+  font-size: 18px;
   color: white;
   white-space: nowrap;
   padding-top: 40px;
   background: linear-gradient(transparent,rgba(0,0,0,.9));
 }
-.gravityDeck .listView-column--Tagline {
+.gravityDeck .listView-column--tagline {
   position: absolute;
-  bottom: 20px;
+  bottom: 12px;
   left: 0px;
   width: 100%;
   text-align: center;
@@ -271,12 +338,12 @@ h2 {
   letter-spacing: 0.4px;
   font-style: italic;
 }
-.gravityDeck .listView-column--Hat {
+.gravityDeck .listView-column--hat {
   position: absolute;
   top: 5px;
   right: 0px;
 }
-.gravityDeck .listView-column--Power {
+.gravityDeck .listView-column--power {
   position: absolute;
   top: 0px;
   left: 0px;
@@ -308,10 +375,7 @@ h2 {
 
 
 
-.scrollableContainer {
-  overflow: auto;
-}
-
+/* styles for the container uses in example #2 */
 .example2-container {
   padding: 20px;
   background-color: #ededed;
@@ -345,8 +409,7 @@ h2 {
 }
 
 
-
-
+/* style for the text input in example #3 */
 .example3-dayInput {
   width: 50px;
   border: 1px solid #ddd;
