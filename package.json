@@ -1,0 +1,26 @@
+{
+  "name": "elm-listview-scripts",
+  "version": "1.0.0",
+  "description": "This is just used to manage some scripts related to the main repo",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "update-demo": "cd demo && elm-app build && gh-pages -d build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rjbma/elm-listview.git"
+  },
+  "author": "rjbma",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rjbma/elm-listview/issues"
+  },
+  "homepage": "https://github.com/rjbma/elm-listview#readme",
+  "devDependencies": {
+    "create-elm-app": "^4.1.2",
+    "gh-pages": "^2.1.1"
+  }
+}
