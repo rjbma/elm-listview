@@ -1,6 +1,11 @@
 # elm-listview
 A package for displaying some list of data in Elm. Most likely will be used to display tables or lists of cards.
 
+# Demo
+See [https://rjbma.github.io/elm-listview/](https://rjbma.github.io/elm-listview/)
+
+The demo site is built with [Create Elm App](https://github.com/halfzebra/create-elm-app).
+
 ## Goals
 ### Main goals:
 - as simple to use as possible

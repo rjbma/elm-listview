@@ -202,6 +202,8 @@ view model =
     Html.div [ class_ "container" ]
         [ Html.h1 [] [ Html.text "elm-listview" ]
         , Html.p [] [ Markdown.toHtml [] "An **Elm** package for viewing data in a `List`." ]
+        , Html.p [] [ Markdown.toHtml [] "Elm package: https://package.elm-lang.org/packages/rjbma/elm-listview" ]
+        , Html.p [] [ Markdown.toHtml [] "Github repo: https://github.com/rjbma/elm-listview" ]
         , viewExample1 model
         , viewExample2 model
         , viewExample3 model
