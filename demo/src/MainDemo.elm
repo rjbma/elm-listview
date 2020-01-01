@@ -38,15 +38,15 @@ initialValues =
 
 initialRows : List Character
 initialRows =
-    [ { fullName = "McGucket", tagLine = "beard-aid", power = 10000, hatType = Gandalf, imageUrl = "https://vignette.wikia.nocookie.net/gravityfalls/images/f/f5/S1e14_if_you_survive.png/revision/latest?cb=20130305201426", values = initialValues }
-    , { fullName = "Soos", tagLine = "a vida é um regabofe", power = 50, hatType = Sports, imageUrl = "https://vignette.wikia.nocookie.net/gravityfalls/images/b/bb/S1e13_whole_busload_of_em.png/revision/latest/top-crop/width/200/height/150?cb=20151221063833", values = initialValues }
-    , { fullName = "Mable", tagLine = "let's go girls", power = 1000, hatType = None, imageUrl = "https://vignette.wikia.nocookie.net/gravityfalls/images/b/b2/S1e3_mabel_new_wax_figure.png/revision/latest/top-crop/width/200/height/150?cb=20160204031402", values = initialValues }
-    , { fullName = "Dipper", tagLine = "let's investigate", power = 1000, hatType = Sports, imageUrl = "https://vignette.wikia.nocookie.net/gravityfalls/images/c/cb/S1e16_dipper_will_take_room.png/revision/latest/top-crop/width/200/height/150?cb=20160119145706", values = initialValues }
-    , { fullName = "Toby Carbonato", tagLine = "it's me", power = 999999999, hatType = Regular, imageUrl = "https://vignette.wikia.nocookie.net/gravityfalls/images/9/9e/S1e3_toby_determined_hands_in_air.png/revision/latest?cb=20120705020811", values = initialValues }
-    , { fullName = "Stan Pines", tagLine = "não é pequeno", power = 20000, hatType = Wtf, imageUrl = "https://vignette.wikia.nocookie.net/gravityfalls/images/9/92/S1e16_something_about_you.png/revision/latest/top-crop/width/200/height/150?cb=20130530141339", values = initialValues }
-    , { fullName = "Pacifica", tagLine = "who?", power = 10, hatType = None, imageUrl = "https://vignette.wikia.nocookie.net/gravityfalls/images/f/f7/S1e7_Pacifica_Northwest.png/revision/latest/top-crop/width/200/height/150?cb=20151116020530", values = initialValues }
-    , { fullName = "Bill", tagLine = "ora ora ora ora ora ora", power = 20000, hatType = Regular, imageUrl = "https://vignette.wikia.nocookie.net/gravityfalls/images/e/ea/S1e19_bill_snap.png/revision/latest/top-crop/width/200/height/150?cb=20130905173319", values = initialValues }
-    , { fullName = "Waddles", tagLine = "oinc oinc", power = 2, hatType = None, imageUrl = "https://vignette.wikia.nocookie.net/gravityfalls/images/0/09/S1e18_Waddles_stare.png/revision/latest/scale-to-width-down/350?cb=20160119145820", values = initialValues }
+    [ { fullName = "McGucket", tagLine = "beard-aid", power = 10000, hatType = Gandalf, imageUrl = "./images/old-man-mcgucket.jpg", values = initialValues }
+    , { fullName = "Soos", tagLine = "a vida é um regabofe", power = 50, hatType = Sports, imageUrl = "./images/soos.png", values = initialValues }
+    , { fullName = "Mable", tagLine = "let's go girls", power = 1000, hatType = None, imageUrl = "./images/mable.jpg", values = initialValues }
+    , { fullName = "Dipper", tagLine = "let's investigate", power = 1000, hatType = Sports, imageUrl = "./images/dipper.jpg", values = initialValues }
+    , { fullName = "Toby Carbonato", tagLine = "it's me", power = 999999999, hatType = Regular, imageUrl = "./images/toby.jpg", values = initialValues }
+    , { fullName = "Stan Pines", tagLine = "não é pequeno", power = 20000, hatType = Wtf, imageUrl = "./images/stan.jpg", values = initialValues }
+    , { fullName = "Pacifica", tagLine = "who?", power = 10, hatType = None, imageUrl = "./images/pacifica.jpg", values = initialValues }
+    , { fullName = "Bill", tagLine = "ora ora ora ora ora ora", power = 20000, hatType = Regular, imageUrl = "./images/bill.jpg", values = initialValues }
+    , { fullName = "Waddles", tagLine = "oinc oinc", power = 2, hatType = None, imageUrl = "./images/waddles.jpg", values = initialValues }
     ]
 
 
@@ -201,7 +201,7 @@ view : Model -> Html Msg
 view model =
     Html.div [ class_ "container" ]
         [ Html.h1 [] [ Html.text "elm-listview" ]
-        , Html.p [] [ Markdown.toHtml [] "An **Elm** library for viewing data in a `List`." ]
+        , Html.p [] [ Markdown.toHtml [] "An **Elm** package for viewing data in a `List`." ]
         , viewExample1 model
         , viewExample2 model
         , viewExample3 model

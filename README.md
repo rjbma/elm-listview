@@ -1,5 +1,5 @@
 # elm-listview
-A component for displaying some list of data in Elm. Most likely will be used to display tables or lists of cards.
+A package for displaying some list of data in Elm. Most likely will be used to display tables or lists of cards.
 
 ## Goals
 ### Main goals:

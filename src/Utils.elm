@@ -149,7 +149,7 @@ special chars.
 If you use column names that include special chars, or if you simply want your columns to
 have better CSS classes, you can specify the code with `ListView.updateColumn.withCode`.
 
-Note that neither this function nor the whole `ListView` library makes any guarantee that
+Note that neither this function nor the whole `ListView` package makes any guarantee that
 each column has a unique code!
 
     codify "Some Name" == "some_name"

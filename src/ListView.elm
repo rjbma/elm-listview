@@ -3,9 +3,9 @@ module ListView exposing
     , getViewInfo, updateState, updateColumn, SortDirection(..), ListViewSortState(..), PageChange(..), ListViewInfo, PagingViewInfo, ColumnViewInfo, ColumnSortInfo(..)
     )
 
-{-| A component for viewing data from a `List`. Features currently include _sorting_ and _pagination_.
+{-| A package for viewing data from a `List`. Features currently include _sorting_ and _pagination_.
 
-A key characteristic of this library is that it tries to seperate **transforming** the data (i.e., sort,
+A key characteristic of this package is that it tries to seperate **transforming** the data (i.e., sort,
 paginate, group, filter, etc.) from actually **viewing** it (e.g., rendering a HTML table, CSS grid, etc.).
 
 This module, `ListView`, is only responsible for the first part, however the `ListView.Viewers` module provides
@@ -16,7 +16,7 @@ some standard viewers that should be sufficient for many use cases.
 
 Here's a small example of how to render a list of data as a HTML table, using the viewer `ListView.Viewers.viewAsHtmlTable`.
 Note that we also use the `TableMsg` type and `updateTable` function from that same module, which are needed by
-the `viewHtmlTable` function. As is ususal with other **Elm** libraries, the `updateTable` function needs to be
+the `viewHtmlTable` function. As is ususal with other **Elm** packages, the `updateTable` function needs to be
 called from your main `update` function somehow.
 
     -- main entity type we want to view
@@ -85,9 +85,9 @@ In those cases, you may want to skip the `ListView.Viewers` altogether, and use 
 instead, which returns all the information needed (hopefully) to render the list, already sorted, filtered, etc. This is
 exactly what the viewers from the `ListView.Viewers` module do, so be sure to check the source code.
 
-One caveat is that, in order for external libraries to be able to render data from the `ListView` module, a lot
+One caveat is that, in order for external packages to be able to render data from the `ListView` module, a lot
 of (otherwise internal) details had to be exposed. This creates a very large public API, which will mostly likely change
-when this library evolves, creating many breaking changes along the way. More so in codebases that define their
+when this package evolves, creating many breaking changes along the way. More so in codebases that define their
 own viewers. Keep this in mind when going down this route!
 
 A final note: many customizations can be made to the standard viewers using CSS alone. You may not need
